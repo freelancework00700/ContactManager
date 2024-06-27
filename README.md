@@ -37,3 +37,75 @@ This is a Contact Manager MVC Web Application built using .NET 8, Entity Framewo
    ```sh
    git clone https://github.com/yourusername/ContactManager.git
    cd ContactManager
+
+
+Install dependencies:
+
+sh
+Copy code
+dotnet restore
+Apply migrations and seed the database:
+
+sh
+Copy code
+dotnet ef migrations add InitialCreate
+dotnet ef database update
+Run the application:
+
+sh
+Copy code
+dotnet run
+Open your browser and navigate to:
+
+arduino
+Copy code
+https://localhost:5001
+Usage
+Create a Contact
+Click on the "Create New" button.
+Fill in the contact details and click "Create".
+Edit a Contact
+Click on the "Edit" button next to a contact.
+Update the contact details and click "Save".
+Delete a Contact
+Click on the "Delete" button next to a contact.
+Confirm the deletion.
+View Contact Details
+Click on the "View" button next to a contact to see the details in a popup.
+Validation
+Client-side and server-side validation is implemented to ensure data integrity.
+
+Client-side validation: Implemented using jQuery Validation and Unobtrusive Validation.
+Server-side validation: Implemented using Data Annotations in the Contact model.
+Map Integration
+To view a contact’s address on a map, ensure you have a valid Google Maps API key.
+
+Replace YOUR_API_KEY in _Layout.cshtml and Edit.cshtml with your actual Google Maps API key.
+
+html
+Copy code
+<script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap" async defer></script>
+When editing a contact with an address, the map will display the location based on the address provided.
+
+Unit Tests
+Unit tests are included to validate key functionalities.
+
+Create a Unit Test Project:
+
+sh
+Copy code
+dotnet new xunit -n ContactManager.Tests
+cd ContactManager.Tests
+dotnet add reference ../ContactManager/ContactManager.csproj
+Run the tests:
+
+sh
+Copy code
+dotnet test
+License
+This project is licensed under the MIT License.
+
+csharp
+Copy code
+
+You can save this content into a file named `README.md` in your project root directory.
