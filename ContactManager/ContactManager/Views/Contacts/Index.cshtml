@@ -34,18 +34,27 @@
         </tr>
     </thead>
     <tbody id="contactTableBody">
-        @foreach (var item in Model)
+        @if (Model.Any())
         {
-            <tr>
-                <td>@Html.DisplayFor(modelItem => item.Name)</td>
-                <td>@Html.DisplayFor(modelItem => item.Email)</td>
-                <td>@Html.DisplayFor(modelItem => item.Phone)</td>
-                <td>@Html.DisplayFor(modelItem => item.Address)</td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-primary">Edit</a>
-                    <a asp-action="View" asp-route-id="@item.Id" class="btn btn-sm btn-warning">View</a>
-                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-danger ml-1">Delete</a>
-                </td>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@Html.DisplayFor(modelItem => item.Name)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Email)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Phone)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Address)</td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-primary">Edit</a>
+                        <a asp-action="View" asp-route-id="@item.Id" class="btn btn-sm btn-warning">View</a>
+                        <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-danger ml-1">Delete</a>
+                    </td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr id="noDataMessage">
+                <td colspan="5" class="text-center">No data found</td>
             </tr>
         }
     </tbody>
@@ -56,17 +65,35 @@
         $(document).ready(function () {
             $('#searchString').on('input', function () {
                 var searchString = $(this).val().toLowerCase();
-                $('#contactTableBody tr').each(function () {
+                var rows = $('#contactTableBody tr');
+                var visibleRows = 0;
+
+                rows.each(function () {
                     var name = $(this).find('td:nth-child(1)').text().toLowerCase();
                     var email = $(this).find('td:nth-child(2)').text().toLowerCase();
                     var phone = $(this).find('td:nth-child(3)').text().toLowerCase();
                     var address = $(this).find('td:nth-child(4)').text().toLowerCase();
-                    if (name.includes(searchString) || address.includes(searchString) || phone.includes(searchString) || email.includes(searchString)) {
+
+                    if ((name && !name.includes("no data found") && name.includes(searchString)) ||
+                        (email && email.includes(searchString)) ||
+                        (phone && phone.includes(searchString)) ||
+                        (address && address.includes(searchString))) {
                         $(this).show();
+                        visibleRows++;
                     } else {
                         $(this).hide();
                     }
                 });
+
+                if (visibleRows === 0) {
+                    if ($('#noDataMessage').length === 0) {
+                        $('#contactTableBody').append('<tr id="noDataMessage"><td colspan="5" class="text-center">No data found</td></tr>');
+                    } else {
+                        $('#noDataMessage').show();
+                    }
+                } else {
+                    $('#noDataMessage').hide();
+                }
             });
         });
     </script>
